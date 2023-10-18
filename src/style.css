@@ -88,7 +88,7 @@ canvas {
   padding: 2rem;
   width: 98%;
   margin-inline: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 }
 
 .n-panel.main-header {
@@ -98,10 +98,12 @@ canvas {
     -40px -40px 40px #ffffff;
 }
 
-.main {
+#main {
   display: flex;
   justify-content: center;
   height: 720px;
+  width: calc(100% - 40px);
+  margin-inline: auto;
 }
 
 /* Utility classes */
