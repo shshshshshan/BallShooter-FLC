@@ -11,7 +11,19 @@ const { Engine,
 
 const KEYS = {
   SPACE: 32,
-  S: 83
+  Q: 81,
+  W: 87,
+  E: 69,
+  R: 82,
+  T: 84,
+  Z: 90,
+  X: 88,
+  C: 67,
+  V: 86,
+  B: 66,
+  N: 78,
+  COMMA: 188,
+  PERIOD: 190
 }
 
 let engine,
@@ -25,6 +37,8 @@ let flc
 let m_cstr, main, thickness;
 
 var bg;
+
+let lastSavedBallPosition
 
 function preload() {
   bg = loadImage('../background.png')
@@ -70,12 +84,83 @@ function setup() {
 }
 
 function keyPressed() {
-  if (keyCode === KEYS.S) {
-    //
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.Q) {
+    // Move hoop to highest point in canvas
+    Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, 150))
+    Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, 150))
+    Body.setPosition(hoop.board, createVector(hoop.board.position.x, 150 - hoop.r * 3 / 2))
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.W) {
+    // Move hoop to mid-high point in canvas
+    Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, 250))
+    Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, 250))
+    Body.setPosition(hoop.board, createVector(hoop.board.position.x, 250 - hoop.r * 3 / 2))
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.E) {
+    // Move hoop to middle point in canvas
+    Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, 350))
+    Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, 350))
+    Body.setPosition(hoop.board, createVector(hoop.board.position.x, 350 - hoop.r * 3 / 2))
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.R) {
+    // Move hoop to middle point in canvas
+    Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, 480))
+    Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, 480))
+    Body.setPosition(hoop.board, createVector(hoop.board.position.x, 480 - hoop.r * 3 / 2))
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.T) {
+    // Move hoop to middle point in canvas
+    Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, main.height - thickness - hoop.r * 3 / 2 - 6))
+    Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, main.height - thickness - hoop.r * 3 / 2 - 6))
+    Body.setPosition(hoop.board, createVector(hoop.board.position.x, main.height - thickness - hoop.r * 3 / 2 - 6 - hoop.r * 3 / 2))
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.Z) {
+    // Move ball very far from the rim
+    Body.setPosition(ball.body, createVector(hoop.outerRim.position.x - 1400, ball.body.position.y));
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.X) {
+    // Move ball far from the rim
+    Body.setPosition(ball.body, createVector(hoop.outerRim.position.x - 1100, ball.body.position.y));
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.C) {
+     // Move ball to somewhat far from the rim
+     Body.setPosition(ball.body, createVector(hoop.outerRim.position.x - 700, ball.body.position.y));
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.V) {
+    // Move ball to somewhat near the rim
+    Body.setPosition(ball.body, createVector(hoop.outerRim.position.x - 400, ball.body.position.y));
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.B) {
+    // Move ball to near the rim
+    Body.setPosition(ball.body, createVector(hoop.outerRim.position.x - 100, ball.body.position.y));
+  }
+
+  if (Body.getSpeed(ball.body) <= 0 && keyCode === KEYS.N) {
+    // Move ball to within rim
+    Body.setPosition(ball.body, createVector(hoop.outerRim.position.x + hoop.r * 3 / 2, ball.body.position.y));
   }
 
   if (keyCode === KEYS.SPACE) {
     ball.shoot()
+  }
+
+  // Save current ball position
+  if (keyCode === KEYS.COMMA) {
+    lastSavedBallPosition = createVector(ball.body.position.x, ball.body.position.y)
+  }
+
+  // Load last ball saved position
+  if (keyCode === KEYS.PERIOD) {
+    Body.setPosition(ball.body, lastSavedBallPosition)
   }
 }
 
