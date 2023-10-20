@@ -7,10 +7,11 @@ const { Engine,
   Composite,
   Mouse,
   MouseConstraint
-  } = Matter;
+} = Matter;
 
 const KEYS = {
-  SPACE: 32
+  SPACE: 32,
+  S: 83
 }
 
 let engine,
@@ -22,6 +23,12 @@ let engine,
 let flc
 
 let m_cstr, main, thickness;
+
+var bg;
+
+function preload() {
+  bg = loadImage('../background.png')
+}
 
 function setup() {
 
@@ -41,7 +48,7 @@ function setup() {
   bounds.push(new Bounds(main.width - 60, main.height, thickness, main.height * 2));
   Composite.add(world, bounds)
 
-  ball = new Ball(500, main.height - thickness + thickness / 5, 30);
+  ball = new Ball(500, main.height - thickness / 2 - 30, 30);
   hoop = new Hoop(main.width - 250, 200, 40);
 
   var canvasMouse = Mouse.create(canvas.elt);
@@ -58,43 +65,45 @@ function setup() {
   })
 
   Composite.add(world, m_cstr);
-
-  // Init FLC
-  flc = new FLC()
+  bg.filter(OPAQUE)
+  bg.filter(BLUR, 5)
 }
 
 function keyPressed() {
+  if (keyCode === KEYS.S) {
+    //
+  }
+
   if (keyCode === KEYS.SPACE) {
-    // ball.addToWorld() 
-    console.clear()
-
-    let proximity = dist(ball.body.position.x, ball.body.position.y, hoop.outerRim.position.x, ball.body.position.y)
-    console.log('Prox: ' + proximity);
-    let actual_height = dist(hoop.outerRim.position.x, main.height - thickness + thickness / 5, hoop.outerRim.position.x, hoop.outerRim.position.y) - dist(ball.body.position.x, main.height - thickness + thickness / 5, ball.body.position.x, ball.body.position.y);
-    let height = dist(ball.body.position.x, ball.body.position.y, ball.body.position.x, hoop.outerRim.position.y);
-    console.log('Height: ' + height);
-
-    // Body.setVelocity(ball.body, createVector(10, -20))
+    ball.shoot()
   }
 }
 
 // Adjusting ball starting position and hoop height
 function mouseDragged() {
+  console.clear()
+
+  let proximity = (hoop.outerRim.position.x + hoop.r * 3 / 2) - ball.body.position.x
+  let height = ball.body.position.y - hoop.outerRim.position.y;
+  console.log('Prox: ' + proximity);
+  console.log('Height: ' + height);
+
   if (!Composite.allBodies(world).includes(ball.body) && ball.mouseInCircle()) {
+    if (mouseY > main.height - thickness / 2 - ball.r || mouseY < ball.r || mouseX > hoop.innerRim.position.x - 10 || mouseX < thickness / 2 + ball.r) return
+
     Body.setPosition(ball.body, createVector(mouseX, mouseY));
   }
 
   if (!Composite.allBodies(world).includes(ball.body) && !ball.mouseInCircle() && hoop.mouseInHoop()) {
+    if (mouseY < 150 || mouseY > main.height - thickness - hoop.r * 3 / 2 - 5) return
     Body.setPosition(hoop.innerRim, createVector(hoop.innerRim.position.x, mouseY))
     Body.setPosition(hoop.outerRim, createVector(hoop.outerRim.position.x, mouseY))
     Body.setPosition(hoop.board, createVector(hoop.board.position.x, mouseY - hoop.r * 3 / 2))
   }
-
-  // Body.applyForce(ball.body, { x: 0.1 , y: 0.001  }, { x: 0.001, y: 0.005 });
 }
 
 function draw() {
-  background(255);
+  background(bg);
   Engine.update(engine);
 
   bounds.forEach(bound => bound.show())
@@ -112,4 +121,7 @@ function draw() {
 
   hoop.show();
   ball.show();
+  // ball.showAngles();
+  hoop.showRim();
+  hoop.showNet();
 }

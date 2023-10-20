@@ -4,6 +4,7 @@ class Bounds {
     this.y = y;
     this.w = w;
     this.h = h;
+    
     let options = {
         friction: 0,
         isStatic: true

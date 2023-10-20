@@ -25,7 +25,6 @@ class Hoop {
 
     show() {
         let o_rPos = this.outerRim.position;
-        let i_rPos = this.innerRim.position;
 
         push();
 
@@ -43,6 +42,33 @@ class Hoop {
             o_rPos.x + this.r * 3 / 2 + this.r * 3 / 2 - this.r / 5,
             o_rPos.y - this.r * 3 - this.r / 5);
 
+        // Rim
+        noFill();
+        stroke(230, 105, 0);
+        strokeWeight(5);
+        ellipseMode(CENTER);
+        ellipse(o_rPos.x + this.r * 3 / 2, o_rPos.y, this.r * 3, this.r / 2);
+        pop();
+    }
+
+    showRim() {
+        push()
+        stroke(200, 70, 0);
+        strokeWeight(5);
+        noFill()
+        arc(this.innerRim.position.x - this.r * 3 / 2, this.innerRim.position.y,
+            this.r * 3,
+            this.r / 2,
+            0,
+            PI,
+            OPEN
+        )
+        pop()
+    }
+
+    showNet() {
+        let o_rPos = this.outerRim.position;
+
         // Net
         stroke(80);
         strokeWeight(2);
@@ -54,14 +80,6 @@ class Hoop {
         line((o_rPos.x + this.r * 3 / 2 + this.r * 3 / 2 + o_rPos.x + this.r * 3 / 2 + this.r) / 2, o_rPos.y + this.r * 3 / 2, o_rPos.x + this.r * 3 / 2 - this.r, o_rPos.y + 3 * this.r)
         stroke(0)
         strokeWeight(1);
-
-        // Rim
-        noFill();
-        stroke(230, 105, 0);
-        strokeWeight(5);
-        ellipseMode(CENTER);
-        ellipse(o_rPos.x + this.r * 3 / 2, o_rPos.y, this.r * 3, this.r / 2);
-        pop();
     }
 
     mouseInHoop() {
